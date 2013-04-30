@@ -51,9 +51,9 @@ class MongoSizeCheck():
 if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--database", help="Monitor the collections of this database")
-    parser.add_option("--host", default="localhost", help="The host of the database to monitor")
-    parser.add_option("--max-collection-size", default=256, help="The max allowed size of a collection in GB")
-    parser.add_option("--compare-days", default=7, help="The number of days to use to calculate a rate of growth")
+    parser.add_option("--host", default="localhost", help="The host of the database to monitor. (default=localhost)")
+    parser.add_option("--max-collection-size", default=256, help="The max allowed size of a collection in GB. (default=256)")
+    parser.add_option("--compare-days", default=7, help="The number of days to use to calculate a rate of growth. (default=7)")
     options, args = parser.parse_args()
     if options.database is None:
         parser.print_help()
