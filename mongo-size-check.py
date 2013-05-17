@@ -1,3 +1,4 @@
+#! /usr/bin/env python
 import json
 from optparse import OptionParser
 import subprocess
@@ -24,7 +25,7 @@ class MongoSizeCheck():
         self.database = options.database
         self.host = options.host
         self.max_collection_size = options.max_collection_size 
-        self.compare_days = options.compare_days
+        self.growth_interval = options.growth_interval
 
     def strip_mongo_preamble(self, mongo_output):
         return mongo_output.partition(self.JS_SENTINEL)[-1]
@@ -40,8 +41,8 @@ class MongoSizeCheck():
         event["description"] = collection_info["name"]
         event["metric"] = collection_info["size"]
         event["attributes"] = {}
-        event["attributes"]["compare_days"] = self.compare_days
-        event["attributes"]["max_collection_size"] = self.max_collection_size
+        event["attributes"]["max_size"] = self.max_collection_size
+        event["attributes"]["growth_interval"] = self.growth_interval
         return event
 
     def report_collection_sizes(self):
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     parser.add_option("--database", help="Monitor the collections of this database")
     parser.add_option("--host", default="localhost", help="The host of the database to monitor. (default=localhost)")
     parser.add_option("--max-collection-size", default=256, help="The max allowed size of a collection in GB. (default=256)")
-    parser.add_option("--compare-days", default=7, help="The number of days to use to calculate a rate of growth. (default=7)")
+    parser.add_option("--growth-interval", default=30, help="The number of days to look at the growth rate for.  Alert if growth will exceed max-collection-size within this interval.  (default=30)")
     options, args = parser.parse_args()
     if options.database is None:
         parser.print_help()

@@ -16,9 +16,10 @@ and [riemann-sumd](https://github.com/bmhatfield/riemann-sumd).
       --max-collection-size=MAX_COLLECTION_SIZE
                             The max allowed size of a collection in GB.
                             (default=256)
-      --compare-days=COMPARE_DAYS
-                            The number of days to use to calculate a rate of
-                            growth. (default=7)
+      --growth-interval=GROWTH_INTERVAL
+                            The number of days to look at the growth rate for.
+                            Alert if growth will exceed max-collection-size within
+                            this interval.  (default=30)
 
 Call `mongo-size-check.py` with the name of the database to monitor.
 The current size of each collection will be emitted as an event to riemann-sumd, which will sent to Riemann.  
