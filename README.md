@@ -33,3 +33,33 @@ Your Riemann config should calculate the rate of growth on collection sizes so y
     ttl: 86400
     tags: ['notify', 'mongo-collection', 'rate-of-change']
     type: 'json'
+
+### Riemann config
+
+````
+(defn when-growth-exceeds
+  "Call children when the the metric of events
+  will exceeed a threshold within some interval.
+  Calculates the rate-of-growth of metric between events.
+  Uses attributes on the event to determine the threshold
+  and interval.  The names of those attribute keys are passed
+  as args to this function."
+  [growth_interval_key threshold_key & children]
+  ;; the metric of the event emitted by this function is the rate-of-change
+  (ddt-events
+    (smap
+      ;; call children if the growth is exceeding the threshold within the interval
+      (fn [event]
+        (let [growth_interval (growth_interval_key event)
+              threshold (threshold_key event)
+              rate-of-change (:metric event)]
+          (when (> threshold (* growth_interval rate-of-change))
+            event)))
+      (apply sdo children))))
+
+(streams
+  (by [:host :service]
+    (where (and (not (expired? event)) (tagged "rate-of-change"))
+      (when-growth-exceeds :growth_interval :max_size
+        (rollup 1 rollup-ttl (email notify-email))))))
+````
