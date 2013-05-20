@@ -37,7 +37,7 @@ class MongoSizeCheck():
     def construct_event(self, collection_info):
         event = {}
         event["service"] = "mongodb collection sizes"
-        event["state"] = "warn"
+        event["state"] = "ok"
         event["description"] = collection_info["name"]
         event["metric"] = collection_info["size"]
         event["attributes"] = {}
