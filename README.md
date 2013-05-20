@@ -61,5 +61,6 @@ Your Riemann config should calculate the rate of growth on collection sizes so y
   (by [:host :service]
     (where (and (not (expired? event)) (tagged "rate-of-change"))
       (when-growth-exceeds :growth_interval :max_size
-        (rollup 1 rollup-ttl (email notify-email))))))
+        (with {:state "error"}
+            (rollup 1 rollup-ttl (email notify-email)))))))
 ````
