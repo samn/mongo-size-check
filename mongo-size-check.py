@@ -9,6 +9,7 @@ class MongoSizeCheck():
     # this is used to split that out so the rest can be parsed as json.
     JS_SENTINEL = "WWWEB$CALE"
 
+    # size is in bytes
     JS_SIZES = """
     var out = [];
     db.getCollectionNames().forEach(function(collection) {
@@ -53,7 +54,7 @@ if __name__ == "__main__":
     parser = OptionParser()
     parser.add_option("--database", help="Monitor the collections of this database")
     parser.add_option("--host", default="localhost", help="The host of the database to monitor. (default=localhost)")
-    parser.add_option("--max-collection-size", default=256, help="The max allowed size of a collection in GB. (default=256)")
+    parser.add_option("--max-collection-size", default=274877906944, help="The max allowed size of a collection in bytes. (default=274877906944)")
     parser.add_option("--growth-interval", default=30, help="The number of days to look at the growth rate for.  Alert if growth will exceed max-collection-size within this interval.  (default=30)")
     options, args = parser.parse_args()
     if options.database is None:
