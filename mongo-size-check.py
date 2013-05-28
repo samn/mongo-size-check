@@ -12,6 +12,7 @@ class MongoSizeCheck():
     # size is in bytes
     JS_SIZES = """
     var out = [];
+    db.getMongo().setSlaveOk();
     db.getCollectionNames().forEach(function(collection) {
         var collectionInfo = {name: collection};
         var size = db.runCommand({collStats: collection})['storageSize'];
