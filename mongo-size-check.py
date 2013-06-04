@@ -56,7 +56,7 @@ if __name__ == "__main__":
     parser.add_option("--database", help="Monitor the collections of this database")
     parser.add_option("--host", default="localhost", help="The host of the database to monitor. (default=localhost)")
     parser.add_option("--max-collection-size", default=274877906944, help="The max allowed size of a collection in bytes. (default=274877906944)")
-    parser.add_option("--growth-interval", default=30, help="The number of days to look at the growth rate for.  Alert if growth will exceed max-collection-size within this interval.  (default=30)")
+    parser.add_option("--growth-interval", default=2592000, help="The number of seconds to look at the growth rate for.  Alert if growth will exceed max-collection-size within this interval.  (default=30 days: 2592000)")
     options, args = parser.parse_args()
     if options.database is None:
         parser.print_help()
